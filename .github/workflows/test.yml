@@ -41,6 +41,7 @@ jobs:
         with:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch_name: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
+          parent: child1
           api_key: ${{ secrets.NEON_API_KEY }}
 
       - name: echo
