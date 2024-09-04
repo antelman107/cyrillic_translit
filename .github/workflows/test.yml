@@ -37,11 +37,21 @@ jobs:
     steps:
       - name: Create Neon Branch
         id: create_neon_branch
-        uses: neondatabase/create-branch-action@v5
+        uses: neondatabase/create-branch-action@main
         with:
+          api_host: https://console-stage.neon.build/api/v2
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch_name: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
+          parent: child1
           api_key: ${{ secrets.NEON_API_KEY }}
+          
+      - uses: neondatabase/reset-branch-action@parameterize-neon-host
+        with:
+          api_host: https://console-stage.neon.build/api/v2
+          project_id: ${{ vars.NEON_PROJECT_ID }}
+          parent: true
+          branch: child1
+          api_key: ${{ secrets.NEON_API_KEY }}    
 
       - name: echo
         run: echo "${{ steps.create_neon_branch.outputs.db_url_with_pooler }}"
